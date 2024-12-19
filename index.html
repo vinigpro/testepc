@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévia dos VídeosCP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Fonte -->
+</head>
+<body>
+    <header>
+        <div class="title-container">
+            <h1>Prévia dos Vídeos</h1>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="purchase.html">Comprar Vídeos</a>
+        </nav>
+    </header>
+    <main>
+        <section class="video-gallery">
+            <div class="video-preview">
+                <h2>Vídeo Completo e + 500 video</h2>
+                <video controls width="300">
+                    <source src="video/VID-20171209-WA0018.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <button onclick="goToPaymentPage()">Comprar</button>
+                <li>Preço 5,00$</li>
+            </div>
+            <div class="video-preview">
+                <h2>Vídeo Completo e + 2500 video</h2>
+                <video controls width="300">
+                    <source src="video/VID-20180518-WA0007.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <button onclick="goToPaymentPage()">Comprar</button>
+                <li>Preço 20,00$</li>
+            </div>
+            <div class="video-preview">
+                <h2>Vídeo Completo e + 5000 videos</h2>
+                <video controls width="300">
+                    <source src="video/VID-20180616-WA0076.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <button onclick="goToPaymentPage()">Comprar</button>
+                <li>Preço 25,00$</li>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Seu Site de Vídeos</p>
+    </footer>
+    <script>
+        function goToPaymentPage() {
+            window.location.href = 'pagamento.html'; // Nome do arquivo da página de pagamento
+        }
+    </script>
+</body>
+</html>

